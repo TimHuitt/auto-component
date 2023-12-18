@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import beautify from 'js-beautify'
-import response from '../../assets/response.js'
-import './Componenter.css'
+import beautify from 'js-beautify';
 
-const Componenter = ({ exclusions }) => {
+import './auto-component.css'
+
+const AutoComponent = () => {
 
 //**-----------**/
 // ** State ** //
@@ -16,10 +16,17 @@ const Componenter = ({ exclusions }) => {
   const [ requestData, setRequestData ] = useState(null)
 
   const [ activeTab, setActiveTab ] = useState('request')
+  
+  // test response
+  const response = {
+    html: `{projects.map((project, index) => (<div key={index} style={{ border: '1px solid #ccc', padding: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><h3>{project.title}</h3><p>{project.description}</p><div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>{project.images.map((image, imgIndex) => (<img key={imgIndex} src={image} alt={\`Project Image \${imgIndex + 1}\`} style={{ width: '100%', maxWidth: '150px', marginBottom: '8px' }} />))}</div><div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}><a href={project.gitLink} style={{ color: 'blue' }}>GitHub</a><a href={project.deployLink} style={{ color: 'green' }}>Deployed</a></div></div>))}`
+  }
 
 //**-------------------------**/
 // ** HTML/CSS Formatting ** //
 //**-----------------------**/
+
+ 
   // get the html/style for the current page and set state
   const htmlContent = () => {
     const body = document.querySelector('body')
@@ -106,9 +113,9 @@ const Componenter = ({ exclusions }) => {
     setIsLoading(false)
   }
 
-//**-----------------**/
-// ** UI Handling ** //
-//**---------------**/
+//**------------------------**/
+// ** UI/Button Handling ** //
+//**----------------------**/
 
   const handleChange = (e) => {
     e.preventDefault()
@@ -133,6 +140,11 @@ const Componenter = ({ exclusions }) => {
   }
   const handleResponseTab = () => {
     setActiveTab('response')
+  }
+
+  const copyToClipboard = async () => {
+    const text = activeTab
+    await navigator.clipboard.writeText(text)
   }
   
 //**---------------**/
@@ -185,4 +197,4 @@ const Componenter = ({ exclusions }) => {
   )
 }
 
-export default Componenter
+export default AutoComponent

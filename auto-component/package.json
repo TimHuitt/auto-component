@@ -1,0 +1,13 @@
+{
+  "name": "auto-component",
+  "version": "0.0.18",
+  "main": "src/auto-component.jsx",
+  "module": "src/auto-component.jsx",
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "files": [
+    "src"
+  ]
+}
