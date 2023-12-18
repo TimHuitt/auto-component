@@ -1,0 +1,81 @@
+#content-creator {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+}
+#content-creator div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  
+}
+#content-creator input {
+  width: 60%;
+  height: 40px;
+  border-radius: 5px;
+  color: #444;
+  font-size: 20px;
+  padding-left: 10px;
+}
+#content-creator button {
+  padding: 10px;
+  margin: 20px;
+  background: rgb(184, 230, 184);
+  color: #111;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px #fff;
+}
+#content-creator button:nth-child(3) {
+  padding: 10px 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+  background: #db9d9d;
+}
+#content-creator button:hover {
+  background: green;
+  color: #eee;
+}
+#content-creator button:nth-child(3):hover {
+  background: #dc3c3c;
+}
+#content-creator div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+}
+.tab {
+  margin: 0 10%;
+  background: #444;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+}
+.tab:hover {
+  background: #666;
+}
+#content-creator pre {
+  position: relative;
+  text-align: left;
+  max-width: 90%;
+  max-height: 60vh;
+  background: #aaa;
+  color: #111;
+  padding: 10px;
+  overflow: auto;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px #fff;
+}
+#content-creator pre button {
+  position: absolute;
+  top: 1%;
+  right: 0;
+  margin-top: 0;
+  background: rgba(0, 0, 0, 0.1)
+}
+#content-creator pre button:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
