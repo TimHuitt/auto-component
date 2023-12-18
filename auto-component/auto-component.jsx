@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import beautify from 'js-beautify'
 import response from '../../assets/response.js'
-import './auto-component.css'
+import './Componenter.css'
 
-const autoComponent = ({ exclusions }) => {
+const Componenter = ({ exclusions }) => {
 
 //**-----------**/
 // ** State ** //
@@ -97,7 +97,7 @@ const autoComponent = ({ exclusions }) => {
     try {
       const res = await sendRequest(requestData)
       if (res) {
-        setResponseData(res)
+        setResponseData(formatHtml(res.html))
         setActiveTab('response')
       }
     } catch (err) {
@@ -125,6 +125,14 @@ const autoComponent = ({ exclusions }) => {
 
   const handleReset = () => {
     setRequest('')
+    setResponseData('')
+  }
+
+  const handleRequestTab = () => {
+    setActiveTab('request')
+  }
+  const handleResponseTab = () => {
+    setActiveTab('response')
   }
   
 //**---------------**/
@@ -132,7 +140,7 @@ const autoComponent = ({ exclusions }) => {
 //**-------------**/
 
   const requestHTML = currentHtml ? (
-    `\nReview the details below for accuracy and privacy concerns.
+    `Review the details below for accuracy and privacy concerns.
     If the contents of an element should be excluded, add the 'exclude' class to the element.
     Click Generate to send the request and receive the auto component AI generated code.
 
@@ -140,29 +148,28 @@ const autoComponent = ({ exclusions }) => {
       + currentRequest 
       + "\n\nUser HTML:\n" 
       + currentHtml 
-    ) : null
+    ) : 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
     
   const responseHtml = responseData ? (
-    responseData.html
-  ) : null
+    responseData
+  ) : 'No response has been generated'
 
-  console.log(activeTab)
-
+  
   return (
     <>
       {/* create the display window */}
       <div id="content-creator">
         <div>
-          <input type="text" value={currentRequest} onChange={handleChange} placeholder="Enter a request for a custom element or component"></input>
+          <input type="text" value={currentRequest} onChange={handleChange} placeholder="Enter a request"></input>
           <button onClick={handleGenerate}>Generate</button>
           <button onClick={handleReset}>X</button>
         </div>
         <div>
           <div>
-            <div className="tab">
+           <div className={`${activeTab === 'request' ? 'selected' : ''} tab`} onClick={handleRequestTab}>
               Request
             </div>
-            <div className="tab">
+            <div className={`${activeTab === 'response' ? 'selected' : ''} tab`} onClick={handleResponseTab}>
               Response
             </div>
           </div>
@@ -170,12 +177,12 @@ const autoComponent = ({ exclusions }) => {
            {activeTab === 'request' ? requestHTML : responseHtml}
           </pre>
         </div>
+        <div className="copy-btn">
+          copy
+        </div>
       </div>
-
-  
-
     </>
   )
 }
 
-export default autoComponent
+export default Componenter

@@ -56,26 +56,38 @@
 .tab:hover {
   background: #666;
 }
+.selected {
+
+  background: #888;
+  color: #111;
+}
 #content-creator pre {
   position: relative;
   text-align: left;
   max-width: 90%;
+  min-width: 90%;
   max-height: 60vh;
   background: #aaa;
   color: #111;
-  padding: 10px;
+  padding: 40px 10px 40px 10px;
   overflow: auto;
   border: 2px solid black;
   border-radius: 10px;
   box-shadow: 0px 0px 5px #fff;
 }
-#content-creator pre button {
+.copy-btn {
   position: absolute;
-  top: 1%;
-  right: 0;
-  margin-top: 0;
-  background: rgba(0, 0, 0, 0.1)
+  top: 120px;
+  right: 7%;
+  max-width: 40px;
+  max-height: 30px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 10px;
+  color: #fff;
 }
-#content-creator pre button:hover {
-  background: rgba(0, 0, 0, 0.6);
+
+.copy-btn:hover {
+  background: #666;
 }
