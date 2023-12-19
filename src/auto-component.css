@@ -1,22 +1,31 @@
-#content-creator {
+#auto-component-ui {
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 40px 0;
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, sans-serif;
+  z-index: 9999;
 }
-#content-creator div {
-  width: 100%;
+#auto-component-entry {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 700px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  
+  padding: 0 20px;
+  background: #222;
+  border-radius: 10px;
+  border: 2px solid rgb(108, 108, 246);
+  z-index: 9999;
 }
-#content-creator input {
-  width: 60%;
+#auto-component-ui input {
+  width: 100%;
   height: 40px;
   border-radius: 5px;
   color: #444;
@@ -24,7 +33,7 @@
   border: 3px solid #ddd;
   padding-left: 10px;
 }
-#content-creator button {
+#auto-component-ui button {
   padding: 10px;
   margin: 20px;
   background: rgb(184, 230, 184);
@@ -32,69 +41,99 @@
   border-radius: 5px;
   box-shadow: 0px 0px 5px #fff;
 }
-#content-creator button:nth-child(3) {
+#auto-component-ui button:nth-child(3) {
   padding: 10px 20px;
   margin-left: 0px;
   margin-right: 0px;
   background: #db9d9d;
 }
-#content-creator button:hover {
+#auto-component-ui button:hover {
   background: green;
   color: #eee;
 }
-#content-creator button:nth-child(3):hover {
+#auto-component-ui button:nth-child(3):hover {
   background: #dc3c3c;
 }
-#content-creator div:nth-child(2) {
+#auto-component-tabs {
+  position: fixed;
+  bottom: 68px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 700px;
+  z-index: 9998;
 }
 .tab {
+  width: 30%;
   margin: 0 10%;
   padding: 4px 0;
-  background: #444;
-  color: #aaa;
-  border-radius: 5px 5px 0 0;
+  background: #c6c7d3 !important;
+  color: #fff !important;
+  border-radius: 0 0 5px 5px;
   cursor: pointer;
 }
 .tab:hover {
-  background: #666;
-  color: #eee;
+  background: #666 !important;
+  color: #eee !important;
 }
-.selected {
-  background: #c6c7d3;
-  color: #fff;
+.auto-component-selected {
+  background: #444 !important;
+  color: #aaa !important;
   font-size: 1.2rem;
-  pointer-events: none;
 }
-#content-creator pre {
-  position: relative;
+#auto-component-code-container {
+  position: fixed;
+  bottom: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 600px;
+  max-height: 300px;
+  height: 300px;
+}
+
+#auto-component-code {
+  width: 100%;
+  max-width: 600px;
+  max-height: 300px;
+  height: 300px;
   text-align: left;
-  max-width: 90%;
-  min-width: 90%;
-  max-height: 60vh;
   background: #cdd1d9;
   color: #111;
   padding: 40px 10px 40px 10px;
-  overflow: auto;
+  overflow-y: auto;
   border: 2px solid black;
   border-radius: 10px;
   box-shadow: 0px 0px 5px #fff;
-  white-space: pre-wrap;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  z-index: 9999;
 }
-.copy-btn {
+.auto-component-copy {
   position: absolute;
-  top: 130px;
-  right: 7%;
+  top: 2px;
+  right: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: red;
   max-width: 50px;
   max-height: 30px;
   cursor: pointer;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: 0 8px 0 8px;
   padding: 10px 20px;
   color: #fff;
+  z-index: 9999;
 }
 
-.copy-btn:hover {
+.auto-component-copy:hover {
   background: #666;
+}
+.auto-component-hidden {
+  display: none;
 }

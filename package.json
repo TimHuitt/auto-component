@@ -1,15 +1,13 @@
 {
   "name": "auto-component",
-  "version": "0.0.31",
+  "version": "0.0.38",
   "main": "src/index.jsx",
   "peerDependencies": {
     "react": "^18.2.0",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-jsx-parser": "^1.29.0"
   },
   "files": [
     "src"
-  ],
-  "dependencies": {
-    "js-beautify": "^1.14.11"
-  }
+  ]
 }
