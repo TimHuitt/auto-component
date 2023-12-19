@@ -1,39 +1,32 @@
 import { useState, useEffect } from 'react'
-import beautify from 'js-beautify';
-
+// import beautify from 'js-beautify';
 import './auto-component.css'
 
-const AutoComponent = () => {
+const AutoComponent = ({ exclusions }) => {
 
 //**-----------**/
 // ** State ** //
 //**---------**/
-  const [currentHtml, setHtml] = useState('')
-  const [currentStyle, setStyles] = useState('')
+  const [ currentHtml, setHtml ] = useState('')
+  const [ currentStyle, setStyles ] = useState('')
   const [ currentRequest, setRequest ] = useState('')
+  const [ user, setUser ] = useState('')
 
   const [ responseData, setResponseData ] = useState(null)
   const [ requestData, setRequestData ] = useState(null)
 
   const [ activeTab, setActiveTab ] = useState('request')
-  
-  // test response
-  const response = {
-    html: `{projects.map((project, index) => (<div key={index} style={{ border: '1px solid #ccc', padding: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><h3>{project.title}</h3><p>{project.description}</p><div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>{project.images.map((image, imgIndex) => (<img key={imgIndex} src={image} alt={\`Project Image \${imgIndex + 1}\`} style={{ width: '100%', maxWidth: '150px', marginBottom: '8px' }} />))}</div><div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}><a href={project.gitLink} style={{ color: 'blue' }}>GitHub</a><a href={project.deployLink} style={{ color: 'green' }}>Deployed</a></div></div>))}`
-  }
 
 //**-------------------------**/
 // ** HTML/CSS Formatting ** //
 //**-----------------------**/
-
- 
   // get the html/style for the current page and set state
   const htmlContent = () => {
     const body = document.querySelector('body')
     const htmlContent = body ? body.innerHTML : ''
     const cssStyles = document.documentElement.innerHTML
 
-    const cleanedHtml = cleanHtml(htmlContent, exclusions)
+    const cleanedHtml = cleanExclusions(htmlContent, exclusions)
     const cleanedStyles = cleanStyles(cssStyles)
     
     setHtml(cleanedHtml)
@@ -41,13 +34,13 @@ const AutoComponent = () => {
   }
 
   // format html for display (breaks/indentation)
-  const formatHtml = (html) => {
-    return beautify.html(html, {
-      indent_size: 2,
-      wrap_line_length: 80,
-      max_preserve_newlines: 1,
-    })
-  }
+  // const formatHtml = (html) => {
+  //   return beautify.html(html, {
+  //     indent_size: 2,
+  //     wrap_line_length: 80,
+  //     max_preserve_newlines: 1,
+  //   })
+  // }
 
   // clean html of exclusions:
   // if an element className includes 'exclude'
@@ -55,22 +48,23 @@ const AutoComponent = () => {
   // OR, (full) the element and it's content are excluded from output
   
   // partial exclusion
-  const cleanHtml = (html) => {
+  const cleanExclusions = (html) => {
     const regexExcludeClass = /(<[^>]*\sclass\s*=\s*['"]([^'"]*exclude[^'"]*)['"][^>]*>)[\s\S]*?(<\/[^>]*>)/g;
     const cleanedHtml = html.replace(regexExcludeClass, '$1$3');
     const scriptIndex = cleanedHtml.lastIndexOf('<script');
 
-    return formatHtml(cleanedHtml.substring(0, scriptIndex));
+    // return formatHtml(cleanedHtml.substring(0, scriptIndex));
+    return cleanedHtml.substring(0, scriptIndex);
   };
 
   // full exclusion
-  const cleanHtmlFull = (html) => {
-    const regexExcludeClass = /<[^>]*\sclass\s*=\s*['"]([^'"]*exclude[^'"]*)['"][^>]*>[\s\S]*?<\/[^>]*>/g
-    const cleanedHtml = html.replace(regexExcludeClass, '')
-    const scriptIndex = cleanedHtml.lastIndexOf('<script')
-    
-    return formatHtml(cleanedHtml.substring(0, scriptIndex))
-  }
+  // const cleanExclusionsFull = (html) => {
+  //   const regexExcludeClass = /<[^>]*\sclass\s*=\s*['"]([^'"]*exclude[^'"]*)['"][^>]*>[\s\S]*?<\/[^>]*>/g
+  //   const cleanedHtml = html.replace(regexExcludeClass, '')
+  //   const scriptIndex = cleanedHtml.lastIndexOf('<script')
+  //   
+  //   return formatHtml(cleanedHtml.substring(0, scriptIndex))
+  // }
 
   // exclude non <style> data and remove comments
   const cleanStyles = (css) => {
@@ -81,13 +75,16 @@ const AutoComponent = () => {
       const cleanedMatches = matches.map(match => match.replace(/\/\*[\s\S]*?\*\//g, ''))
       return cleanedMatches
     }
-  
     return null
   }
 
+  const randomUser = () => {
+    setUser(Math.floor(Math.random()*100000))
+  }
 
   useEffect(() => {
     htmlContent()
+    randomUser()
   }, [])
 
 //**---------------------------**/
@@ -95,23 +92,48 @@ const AutoComponent = () => {
 //**-------------------------**/
 
   // TEMP FUNCTION FOR TESTING
-  const sendRequest = (data) => {
-    return(response)
-  }
+  // const sendRequest = (data) => {
+  //   return(response)
+  // }
 
-  // make api request with updated state data
-  const handleRequest = async () => {
+  const sendRequest = async () => {
+    const url = "https://server-auto-component-46830ff262f8.herokuapp.com/api";
+  
     try {
-      const res = await sendRequest(requestData)
-      if (res) {
-        setResponseData(formatHtml(res.html))
-        setActiveTab('response')
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (res.ok) {
+        const jsonData = await res.json(); // Extract JSON data from the response body
+        return jsonData;
+      } else {
+        throw new Error("Invalid request!");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err.message);
     }
-    setIsLoading(false)
-  }
+  };
+  
+  // make API request with updated state data
+  const handleRequest = async () => {
+    try {
+      const resData = await sendRequest();
+  
+      if (resData) {
+        // setResponseData(formatHtml(resData.response.content));
+        setResponseData(resData.response.content);
+        setActiveTab('response');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    // setIsLoading(false);
+  };
 
 //**------------------------**/
 // ** UI/Button Handling ** //
@@ -124,15 +146,22 @@ const AutoComponent = () => {
 
   const handleGenerate = async (e) => {
     await setRequestData({
-      request: currentRequest, 
-      html: currentHtml
+      "userId": user,
+      "request": currentRequest, 
+      "html": currentHtml
     })
-    handleRequest()
   }
+
+  useEffect(() => {
+    if (requestData !== null) {
+      handleRequest();
+    }
+  },[requestData])
 
   const handleReset = () => {
     setRequest('')
     setResponseData('')
+    randomUser()
   }
 
   const handleRequestTab = () => {
