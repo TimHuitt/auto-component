@@ -109,7 +109,7 @@ const AutoComponent = ({ exclusions }) => {
       });
   
       if (res.ok) {
-        const jsonData = await res.json(); // Extract JSON data from the response body
+        const jsonData = await res.json();
         return jsonData;
       } else {
         throw new Error("Invalid request!");
@@ -172,7 +172,7 @@ const AutoComponent = ({ exclusions }) => {
   }
 
   const copyToClipboard = async () => {
-    const text = activeTab
+    const text = activeTab === 'response' ? responseData : requestData
     await navigator.clipboard.writeText(text)
   }
   
@@ -181,15 +181,17 @@ const AutoComponent = ({ exclusions }) => {
 //**-------------**/
 
   const requestHTML = currentHtml ? (
-    `Review the details below for accuracy and privacy concerns.
-    If the contents of an element should be excluded, add the 'exclude' class to the element.
-    Click Generate to send the request and receive the auto component AI generated code.
+`Review the details below for accuracy and privacy concerns.
+If the contents of an element should be excluded, add the 'exclude' class to the element.
+Click Generate to send the request and receive the auto component AI generated code.
 
-    User Request:\n    ` 
-      + currentRequest 
-      + "\n\nUser HTML:\n" 
-      + currentHtml 
-    ) : 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
+User ID:\n    ` 
++ user
++ "\n\nUser Request:\n"
++ currentRequest 
++ "\n\nUser HTML:\n" 
++ currentHtml 
+) : 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
     
   const responseHtml = responseData ? (
     responseData
@@ -218,7 +220,7 @@ const AutoComponent = ({ exclusions }) => {
            {activeTab === 'request' ? requestHTML : responseHtml}
           </pre>
         </div>
-        <div className="copy-btn">
+        <div className="copy-btn" onClick={copyToClipboard} style={activeTab !== 'response' ? { display: 'none' } : null}>
           copy
         </div>
       </div>
