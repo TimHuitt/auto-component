@@ -28,6 +28,8 @@ const AutoComponent = () => {
   
   const [ activeTab, setActiveTab ] = useState('')
   const [ history, setHistory ] = useState(["No History"])
+  const [isRequesting, setIsRequesting] = useState(false);
+
 
 //**-------------------------**/
 // ** HTML/CSS Formatting ** //
@@ -127,6 +129,7 @@ const AutoComponent = () => {
   // handle sending the user request to the auto-component API
   // API sends packaged request to GPT for a code based response
   const sendRequest = async () => {
+    setIsRequesting(true);
     const url = "https://server-auto-component-46830ff262f8.herokuapp.com/api";
     
     try {
@@ -147,6 +150,7 @@ const AutoComponent = () => {
     } catch (err) {
       console.log(err.message);
     }
+    setIsRequesting(false);
   };
   
   // handle request initialization and state updates
@@ -177,8 +181,7 @@ const AutoComponent = () => {
   const handleGenerate = async (e) => {
     await setRequestData({
       "userId": user,
-      "request": currentRequest, 
-      "html": currentHtml
+      "request": currentRequest
     })
     setRequest('')
   }
@@ -227,11 +230,7 @@ const AutoComponent = () => {
   // build request tab content
   const requestHTML = currentHtml ? (
 getLog() && getLog().join('') + 
-`Review the details below for accuracy and privacy concerns.
-
-If the contents of an element should be excluded, add the 'exclude' class to the element.
-
-Click Generate to send a request and receive the auto component AI generated code.
+`Click Generate to send a request and receive the auto component AI generated code.
 
 User ID:\n` 
 + user
@@ -261,11 +260,17 @@ User ID:\n`
   return (
     <div className='auto-component exclude'>
       <div>
-        {responseData ? (
+        <span className="placeholder-top-left">auto-component</span>
+      <hr></hr>
+      {responseData ? (
           <JSXParser jsx={responseData} />
         ) : (
-          '- auto component will be added here -'
+          <div className={`auto-component-placeholder ${isRequesting ? 'animate' : ''}`}>
+            
+            
+          </div>
         )}
+        <hr></hr>
       </div>
       <div id="auto-component-ui">
         <div 

@@ -137,3 +137,41 @@
 .auto-component-hidden {
   display: none;
 }
+
+.placeholder-top-left {
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 10px; 
+}
+
+.auto-component-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  min-height: 150px;
+  background-size: 40px 40px;
+  background-image: repeating-linear-gradient(
+    45deg, /* Change angle to horizontal */
+    rgba(255, 255, 255, 0.15) 0px,
+    rgba(76, 126, 97, 0.459) 1px,
+    transparent 3px,
+    transparent 14px
+  );
+  position: relative;
+}
+
+.auto-component-placeholder.animate {
+  animation: slide 1s linear infinite;
+}
+
+@keyframes slide {
+  from {
+    background-position: -40px 0; /* Start moving from the left */
+  }
+  to {
+    background-position: 40px 0; /* Move to the right */
+  }
+}
