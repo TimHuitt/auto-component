@@ -1,5 +1,12 @@
+// AutoComponent
+// Built By:
+//   https://github.com/SamPatt
+//   https://github.com/TimHuitt
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
+// Helpful in Babel transpile: https://github.com/receter/my-components
+
 import React from 'react'
 import JSXParser from 'react-jsx-parser'
 import { useState, useEffect } from 'react'
@@ -47,50 +54,48 @@ const AutoComponent = () => {
     })
   }
 
-  // clean html of exclusions:
+  // ** Clean HTML of Exclusions **
   // if an element className includes 'exclude'
   // (partial) the element wrapper remains, but contents removed
   // OR, (full) the element and it's content are excluded from output
-  
-  // partial exclusion
+  // thanks gpt for these clever exclusion tools
 
+  // partial exclusion
   const cleanExclusions = (html) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-  
     const elementsToClean = doc.querySelectorAll('.exclude');
-  
+    
+    const removeAllChildNodes = (element) => {
+      Array.from(element.childNodes).forEach((child) => {
+        if (child.nodeType === Node.ELEMENT_NODE) {
+          removeAllChildNodes(child);
+        } else {
+          element.removeChild(child);
+        }
+      });
+    };
+
     elementsToClean.forEach((element) => {
       removeAllChildNodes(element);
     });
   
     return doc.documentElement.outerHTML;
   };
-  
-  const removeAllChildNodes = (element) => {
-    Array.from(element.childNodes).forEach((child) => {
-      if (child.nodeType === Node.ELEMENT_NODE) {
-        removeAllChildNodes(child);
-      } else {
-        element.removeChild(child);
-      }
-    });
-  };
-  
 
   // full exclusion
-  // const cleanExclusions = (html) => {
-  //   const parser = new DOMParser();
-  //   const doc = parser.parseFromString(html, 'text/html');
-  // 
-  //   const elementsToExclude = doc.querySelectorAll('.exclude');
-  // 
-  //   elementsToExclude.forEach((element) => {
-  //     element.parentNode.removeChild(element);
-  //   });
-  // 
-  //   return doc.documentElement.outerHTML;
-  // };
+  const cleanExclusionsFull = (html) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+  
+    const elementsToExclude = doc.querySelectorAll('.exclude');
+  
+    elementsToExclude.forEach((element) => {
+      element.parentNode.removeChild(element);
+    });
+  
+    return doc.documentElement.outerHTML;
+  };
 
   // exclude non <style> data and remove comments
   const cleanStyles = (css) => {
@@ -104,10 +109,12 @@ const AutoComponent = () => {
     return null
   }
 
+  // generate a random 5 digit user id
   const randomUser = () => {
     setUser(Math.floor(Math.random()*100000))
   }
 
+  // set initial load data
   useEffect(() => {
     htmlContent()
     randomUser()
@@ -117,11 +124,8 @@ const AutoComponent = () => {
 // ** API Requests/Response ** //
 //**-------------------------**/
 
-  // TEMP FUNCTION FOR TESTING
-  // const sendRequest = (data) => {
-  //   return(response)
-  // }
-
+  // handle sending the user request to the auto-component API
+  // API sends packaged request to GPT for a code based response
   const sendRequest = async () => {
     const url = "https://server-auto-component-46830ff262f8.herokuapp.com/api";
     
@@ -145,7 +149,7 @@ const AutoComponent = () => {
     }
   };
   
-  // make API request with updated state data
+  // handle request initialization and state updates
   const handleRequest = async () => {
     try {
       const resData = await sendRequest();
@@ -153,7 +157,7 @@ const AutoComponent = () => {
       if (resData) {
         setHistory(resData.history)
         setResponseData(formatHtml(resData.response.content));
-        setActiveTab('response');
+        activeTab !== '' && setActiveTab('response')
       }
     } catch (err) {
       console.log(err);
@@ -176,6 +180,7 @@ const AutoComponent = () => {
       "request": currentRequest, 
       "html": currentHtml
     })
+    setRequest('')
   }
 
   useEffect(() => {
@@ -208,68 +213,107 @@ const AutoComponent = () => {
 // ** Rendering ** //
 //**-------------**/
 
+  // get request history log and format for display
   const getLog = () => {
     return (
     history.map((entry, index) => (
-        
-        index !== 0 && entry.content.split('HTML Context:')[0] + (entry.content.includes("User Request") ? '\n' : '\n\n\n')
+        index !== 0 
+          ? entry.content.split('HTML Context:')[0] + (entry.content.includes("User Request") ? '\n\n' : '\n\n\n')
+          : ''
       )
     ))
   }
 
+  // build request tab content
   const requestHTML = currentHtml ? (
-getLog() + 
+getLog() && getLog().join('') + 
 `Review the details below for accuracy and privacy concerns.
-If the contents of an element should be excluded, add the 'exclude' class to the element.
-Click Generate to send the request and receive the auto component AI generated code.
 
-User ID:\n    ` 
+If the contents of an element should be excluded, add the 'exclude' class to the element.
+
+Click Generate to send a request and receive the auto component AI generated code.
+
+User ID:\n` 
 + user
 + "\n\nUser Request:\n"
 + currentRequest 
 + "\n\nUser HTML:\n" 
 + currentHtml 
-) : 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
+) 
+: 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
     
 
-console.log(responseData)
-const responseHtml = responseData ? (
-    responseData
-  ) : 'No response has been generated'
-    
+  const responseHtml = responseData ? (
+      responseData
+    ) : 'No response has been generated'
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleGenerate();
+    }
+  };
+
+//**------------**/
+// ** Return ** //
+//**----------**/
+
   return (
-    
     <div className='auto-component exclude'>
-            
       <div>
         {responseData ? (
-          // Use {} to directly interpolate the JSX code
           <JSXParser jsx={responseData} />
         ) : (
           '- auto component will be added here -'
         )}
       </div>
-      
       <div id="auto-component-ui">
-        <div id="auto-component-code-container" className={`${!activeTab ? 'auto-component-hidden' : ''} auto-component-code`}>
+        <div 
+          id="auto-component-code-container" 
+          className={`${!activeTab 
+            ? 'auto-component-hidden' 
+            : ''} auto-component-code`}
+          >
           <pre id="auto-component-code">
-            {activeTab === 'request' ? requestHTML : responseHtml}
+            {activeTab === 'request' 
+              ? requestHTML 
+              : responseHtml}
           </pre>
-          <div className="auto-component-copy" onClick={copyToClipboard} style={activeTab !== 'response' ? { display: 'none' } : null}>
+          <div 
+            className="auto-component-copy" 
+            onClick={copyToClipboard} 
+            style={activeTab !== 'response' 
+              ? { display: 'none' } 
+              : null}
+            >
             copy
           </div>
         </div>
         <div id="auto-component-entry">
-          <input type="text" value={currentRequest} onChange={handleChange} placeholder="Enter a request"></input>
+          <input 
+            type="text" 
+            value={currentRequest} 
+            onChange={handleChange} 
+            onKeyDown={handleKeyDown} 
+            placeholder="Enter a request">
+          </input>
           <button onClick={handleGenerate}>Generate</button>
           <button onClick={handleReset}>X</button>
         </div>
         <div>
           <div id='auto-component-tabs'>
-           <div className={`${activeTab === 'request' ? 'auto-component-selected' : ''} tab`} onClick={handleRequestTab}>
+           <div 
+            className={`${activeTab === 'request' 
+              ? 'auto-component-selected' 
+              : ''} tab`} onClick={handleRequestTab}
+            >
               Request
             </div>
-            <div className={`${activeTab === 'response' ? 'auto-component-selected' : ''} tab`} onClick={handleResponseTab}>
+            <div 
+              className={`${activeTab === 'response' 
+                ? 'auto-component-selected' 
+                : ''} tab`} onClick={handleResponseTab}
+              >
               Response
             </div>
           </div>
