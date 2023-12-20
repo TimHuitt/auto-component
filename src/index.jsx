@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
+import React from 'react'
 import JSXParser from 'react-jsx-parser'
 import { useState, useEffect } from 'react'
 // import beautify from 'js-beautify';
