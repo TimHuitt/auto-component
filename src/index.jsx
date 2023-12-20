@@ -34,7 +34,7 @@ const AutoComponent = () => {
     const cleanedHtml = cleanExclusions(htmlContent)
     const cleanedStyles = cleanStyles(cssStyles)
     
-    setHtml(cleanedHtml)
+    setHtml(formatHtml(cleanedHtml))
     setStyles(cleanedStyles)
   }
 
