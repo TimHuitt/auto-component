@@ -3,7 +3,7 @@
 import React from 'react'
 import JSXParser from 'react-jsx-parser'
 import { useState, useEffect } from 'react'
-// import beautify from 'js-beautify';
+import beautify from 'js-beautify';
 import './auto-component.css'
 
 const AutoComponent = () => {
@@ -39,13 +39,13 @@ const AutoComponent = () => {
   }
 
   // format html for display (breaks/indentation)
-  // const formatHtml = (html) => {
-  //   return beautify.html(html, {
-  //     indent_size: 2,
-  //     wrap_line_length: 80,
-  //     max_preserve_newlines: 1,
-  //   })
-  // }
+  const formatHtml = (html) => {
+    return beautify.html(html, {
+      indent_size: 2,
+      wrap_line_length: 80,
+      max_preserve_newlines: 1,
+    })
+  }
 
   // clean html of exclusions:
   // if an element className includes 'exclude'
@@ -144,19 +144,6 @@ const AutoComponent = () => {
       console.log(err.message);
     }
   };
-
-  const cleanId = (html) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-  
-    const autoComponentContainer = doc.getElementById('auto-component-container');
-  
-    if (autoComponentContainer) {
-      autoComponentContainer.removeAttribute('id');
-    }
-  
-    return doc.documentElement.outerHTML;
-  };
   
   // make API request with updated state data
   const handleRequest = async () => {
@@ -165,9 +152,7 @@ const AutoComponent = () => {
   
       if (resData) {
         setHistory(resData.history)
-        // setResponseData(formatHtml(resData.response.content));
-        // const outputHtml = cleanId(resData.response.content)
-        setResponseData(resData.response.content);
+        setResponseData(formatHtml(resData.response.content));
         setActiveTab('response');
       }
     } catch (err) {
