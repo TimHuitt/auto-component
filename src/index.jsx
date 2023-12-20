@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import JSXParser from 'react-jsx-parser'
+import { JSXParser } from 'react-jsx-parser'
 import { useState, useEffect } from 'react'
 // import beautify from 'js-beautify';
 import './auto-component.css'
@@ -254,7 +254,6 @@ const responseHtml = responseData ? (
   return (
     
     <div className='auto-component exclude'>
-            
       <div>
         {responseData ? (
           // Use {} to directly interpolate the JSX code
@@ -263,7 +262,7 @@ const responseHtml = responseData ? (
           '- auto component will be added here -'
         )}
       </div>
-      
+
       <div id="auto-component-ui">
         <div id="auto-component-code-container" className={`${!activeTab ? 'auto-component-hidden' : ''} auto-component-code`}>
           <pre id="auto-component-code">
