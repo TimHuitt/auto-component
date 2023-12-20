@@ -5,6 +5,7 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "*",
+    "js-beautify": "^1.14.11",
     "react-jsx-parser": "^1.29.0"
   },
   "scripts": {
