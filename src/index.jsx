@@ -165,8 +165,9 @@ const AutoComponent = () => {
       }
     } catch (err) {
       console.log(err);
-    }
-    // setIsLoading(false);
+    } finally {
+        setIsRequesting(false); // Set isRequesting to false after processing response
+      }
   };
 
 //**------------------------**/
@@ -197,6 +198,7 @@ const AutoComponent = () => {
     setResponseData('')
     randomUser()
     setHistory([])
+    setIsRequesting(false); 
   }
 
   const handleRequestTab = async () => {
@@ -295,16 +297,20 @@ User ID:\n`
           </div>
         </div>
         <div id="auto-component-entry">
-          <input 
-            type="text" 
-            value={currentRequest} 
-            onChange={handleChange} 
-            onKeyDown={handleKeyDown} 
-            placeholder="Enter a request">
-          </input>
-          <button onClick={handleGenerate}>Generate</button>
-          <button onClick={handleReset}>X</button>
-        </div>
+            {isRequesting ? (
+                <div className="loading-indicator"></div>
+            ) : (
+                <input 
+                type="text" 
+                value={currentRequest} 
+                onChange={handleChange} 
+                onKeyDown={handleKeyDown} 
+                placeholder="Enter a request">
+                </input>
+            )}
+            <button onClick={handleGenerate}>Generate</button>
+            <button onClick={handleReset}>X</button>
+         </div>
         <div>
           <div id='auto-component-tabs'>
            <div 
