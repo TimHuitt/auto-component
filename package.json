@@ -21,5 +21,27 @@
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-react": "^7.23.3"
-  }
+  },
+  "license": "AGPL-3.0",
+  "contributors": [
+    {
+      "name": "Tim Huitt",
+      "email": "timhuitt@gmail.com",
+      "url": "https://github.com/timhuitt"
+    },
+    {
+      "name": "Sam Patterson",
+      "email": "contributor.email@example.com",
+      "url": "https://github.com/sampatt"
+    }
+  ],
+  "description": "Your package description goes here",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TimHuitt/auto-component"
+  },
+  "bugs": {
+    "url": "https://github.com/TimHuitt/auto-component/issues"
+  },
+  "homepage": "https://github.com/TimHuitt/auto-component"
 }
