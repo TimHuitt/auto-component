@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/auto-component.svg)](https://www.npmjs.com/package/auto-component)
 
-> A tool to streamline UI element creation in React projects by utilizing AI prompted generation
+> A tool to streamline UI element creation in React projects through AI prompted generation
 
 ## Technologies Used
 
