@@ -31,11 +31,11 @@
     },
     {
       "name": "Sam Patterson",
-      "email": "contributor.email@example.com",
+      "email": "git@sampatt.com",
       "url": "https://github.com/sampatt"
     }
   ],
-  "description": "Your package description goes here",
+  "description": "A tool to streamline UI element creation in React projects by utilizing AI prompted generation",
   "repository": {
     "type": "git",
     "url": "https://github.com/TimHuitt/auto-component"
