@@ -280,7 +280,7 @@ User ID:\n`
           className={`${!activeTab 
             ? 'auto-component-hidden' 
             : ''} auto-component-code`}
-          >
+        >
           <pre id="auto-component-code">
             {activeTab === 'request' 
               ? requestHTML 
