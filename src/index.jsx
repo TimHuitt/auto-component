@@ -183,9 +183,43 @@ const AutoComponent = () => {
       }
   };
 
+  const saveComponent = async (data) => {
+    const url = "https://server-auto-component-46830ff262f8.herokuapp.com/save";
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to save component');
+    }
+  
+    const responseData = await response.json();
+    console.log('Save successful:', responseData);
+  };
+  
+
 //**------------------------**/
 // ** UI/Button Handling ** //
 //**----------------------**/
+
+  const handleSave = async () => {
+    const saveData = {
+      userId: user,
+      content: responseData,
+      // Add other relevant data you might want to save
+    };
+
+    try {
+      // Call a function to send this data to your backend
+      await saveComponent(saveData);
+    } catch (error) {
+      console.error("Error saving component:", error);
+    }
+  };
 
   const handleChange = (e) => {
     e.preventDefault()
@@ -322,6 +356,7 @@ User ID:\n`
                 </input>
             )}
             <button onClick={handleGenerate}>Generate</button>
+            <button onClick={handleSave}>Save</button>
             <button onClick={handleReset}>X</button>
          </div>
         <div>
