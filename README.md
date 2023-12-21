@@ -68,6 +68,44 @@ import AutoComponent from 'auto-component';
 
 7. Click the red X button to start a new session.
 
+
+# Planned Features
+
+## User Features
+
+1. **Personal Page:**
+   - Allow users to create a personal page to store and manage their created components.
+   - Efficiently reuse and keep track of components.
+
+2. **Save and Manage Code:**
+   - Provide a "Save" button to store the returned code from the AI.
+   - Users can easily manage their components within their user page.
+
+3. **Position Customization:**
+   - Allow users to shift the position of the request/code box around the screen.
+   - Ensure it doesn't obscure anything in their project.
+
+## Developer Features
+
+1. **Code Integration Walkthrough:**
+   - Include an optional walkthrough of code integration.
+   - Help developers understand how to implement generated components into their projects.
+
+2. **Code Editing in the Browser:**
+   - Enable developers to edit displayed code directly in the browser.
+   - Allow quick adjustments without leaving the platform.
+
+3. **Access Saved Components:**
+   - Provide developers with the ability to access their saved components directly from the AutoComponent component.
+
+4. **Multiple AutoComponent Instances:**
+   - Notify developers if there is more than one `<AutoComponent />` creation component added to the project.
+   - Prevent potential functionality issues that may arise from multiple instances.
+
+5. **Multiple Components with Single Request Box:**
+   - Allow developers to add multiple components to the page.
+   - Provide an easy way to switch between them using a single request box.
+
 ## License
 
 This project is licensed under the AGPL 3.0 License - see the [LICENSE](LICENSE) file for details.
