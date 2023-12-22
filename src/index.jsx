@@ -35,6 +35,7 @@ const AutoComponent = () => {
   const [ currentStyle, setStyles ] = useState('')
   const [ currentRequest, setRequest ] = useState('')
   const [ user, setUser ] = useState('')
+  const [ userID, setUserID ] = useState('')
 
   const [ responseData, setResponseData ] = useState('')
   const [ requestData, setRequestData ] = useState(null)
@@ -42,7 +43,6 @@ const AutoComponent = () => {
   const [ activeTab, setActiveTab ] = useState('')
   const [ history, setHistory ] = useState(["No History"])
   const [isRequesting, setIsRequesting] = useState(false);
-
 
 //**-------------------------**/
 // ** HTML/CSS Formatting ** //
@@ -184,7 +184,7 @@ const AutoComponent = () => {
   };
 
   const saveComponent = async (data) => {
-    const url = "https://server-auto-component-46830ff262f8.herokuapp.com/save";
+    const url = "https://server-auto-component-46830ff262f8.herokuapp.com/user";
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -284,9 +284,7 @@ getLog() && getLog().join('') +
 User ID:\n` 
 + user
 + "\n\nUser Request:\n"
-+ currentRequest 
-+ "\n\nUser HTML:\n" 
-+ currentHtml 
++ currentRequest
 ) 
 : 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
     
@@ -310,14 +308,11 @@ User ID:\n`
     <div className='auto-component exclude'>
       <div>
         <span className="placeholder-top-left">auto-component</span>
-      <hr></hr>
-      {responseData ? (
+        <hr></hr>
+        {responseData ? (
           <JSXParser jsx={responseData} />
         ) : (
-          <div className={`auto-component-placeholder ${isRequesting ? 'animate' : ''}`}>
-            
-            
-          </div>
+          <div className={`auto-component-placeholder ${isRequesting ? 'animate' : ''}`} />
         )}
         <hr></hr>
       </div>
@@ -356,7 +351,6 @@ User ID:\n`
                 </input>
             )}
             <button onClick={handleGenerate}>Generate</button>
-            <button onClick={handleSave}>Save</button>
             <button onClick={handleReset}>X</button>
          </div>
         <div>
