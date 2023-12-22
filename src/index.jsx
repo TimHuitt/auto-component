@@ -203,17 +203,18 @@ const AutoComponent = () => {
   }
 
   // build request tab content
-  const requestHTML = currentHtml ? (
+  const requestHTML = (
 getLog() && getLog().join('') + 
-`Click Generate to send a request and receive the auto component AI generated code.
+`
+Click Generate to send a request and receive the auto component AI generated code.
+
+Example: "Create a full width container, center a box inside, and place a circle inside the box"
 
 User ID:\n` 
 + user
 + "\n\nUser Request:\n"
 + currentRequest
-) 
-: 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
-    
+)    
 
   const responseHtml = responseData ? (
       responseData
