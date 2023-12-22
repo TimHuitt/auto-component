@@ -1,6 +1,6 @@
 {
   "name": "auto-component",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "lib/index.js",
   "peerDependencies": {
     "react": "^18.2.0",
