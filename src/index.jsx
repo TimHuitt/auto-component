@@ -32,10 +32,8 @@ const AutoComponent = () => {
 // ** State ** //
 //**---------**/
   const [ currentHtml, setHtml ] = useState('')
-  const [ currentStyle, setStyles ] = useState('')
   const [ currentRequest, setRequest ] = useState('')
   const [ user, setUser ] = useState('')
-  const [ userID, setUserID ] = useState('')
 
   const [ responseData, setResponseData ] = useState('')
   const [ requestData, setRequestData ] = useState(null)
@@ -47,20 +45,8 @@ const AutoComponent = () => {
 //**-------------------------**/
 // ** HTML/CSS Formatting ** //
 //**-----------------------**/
-  // get the html/style for the current page and set state
-  const htmlContent = () => {
-    const body = document.querySelector('body')
-    const htmlContent = body ? body.innerHTML : ''
-    const cssStyles = document.documentElement.innerHTML
 
-    const cleanedHtml = cleanExclusions(htmlContent)
-    const cleanedStyles = cleanStyles(cssStyles)
-    
-    setHtml(formatHtml(cleanedHtml))
-    setStyles(cleanedStyles)
-  }
-
-  // format html for display (breaks/indentation)
+// format html for display (breaks/indentation)
   const formatHtml = (html) => {
     return beautify.html(html, {
       indent_size: 2,
@@ -98,32 +84,6 @@ const AutoComponent = () => {
     return doc.documentElement.outerHTML;
   };
 
-  // full exclusion
-  const cleanExclusionsFull = (html) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-  
-    const elementsToExclude = doc.querySelectorAll('.exclude');
-  
-    elementsToExclude.forEach((element) => {
-      element.parentNode.removeChild(element);
-    });
-  
-    return doc.documentElement.outerHTML;
-  };
-
-  // exclude non <style> data and remove comments
-  const cleanStyles = (css) => {
-    const styleRegex = /<style\b[^>]*>(.*?)<\/style>/gs
-    const matches = css.match(styleRegex)
-  
-    if (matches) {
-      const cleanedMatches = matches.map(match => match.replace(/\/\*[\s\S]*?\*\//g, ''))
-      return cleanedMatches
-    }
-    return null
-  }
-
   // generate a random 5 digit user id
   const randomUser = () => {
     setUser(Math.floor(Math.random()*100000))
@@ -131,7 +91,6 @@ const AutoComponent = () => {
 
   // set initial load data
   useEffect(() => {
-    htmlContent()
     randomUser()
   }, [])
 
@@ -183,43 +142,10 @@ const AutoComponent = () => {
       }
   };
 
-  const saveComponent = async (data) => {
-    const url = "https://server-auto-component-46830ff262f8.herokuapp.com/user";
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-  
-    if (!response.ok) {
-      throw new Error('Failed to save component');
-    }
-  
-    const responseData = await response.json();
-    console.log('Save successful:', responseData);
-  };
-  
 
 //**------------------------**/
 // ** UI/Button Handling ** //
 //**----------------------**/
-
-  const handleSave = async () => {
-    const saveData = {
-      userId: user,
-      content: responseData,
-      // Add other relevant data you might want to save
-    };
-
-    try {
-      // Call a function to send this data to your backend
-      await saveComponent(saveData);
-    } catch (error) {
-      console.error("Error saving component:", error);
-    }
-  };
 
   const handleChange = (e) => {
     e.preventDefault()
