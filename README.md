@@ -9,6 +9,11 @@
 
 > A tool to streamline UI element creation in React projects through AI prompted generation
 
+### Demo Video
+
+[![Auto-Component Demo](https://img.youtube.com/vi/SYhRGkiXS_M/0.jpg)](https://youtu.be/SYhRGkiXS_M "Auto-Component Demo")
+
+
 ## Technologies Used
 
 | Category            | Technologies                                                                          |
